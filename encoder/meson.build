@@ -6,6 +6,8 @@ rpicam_app_src += files([
     'h264_encoder.cpp',
     'mjpeg_encoder.cpp',
     'null_encoder.cpp',
+    'KIPRnet.cpp',
+    'PracticalSocket.cpp',
 ])
 
 encoder_headers = files([
@@ -13,10 +15,14 @@ encoder_headers = files([
     'h264_encoder.hpp',
     'mjpeg_encoder.hpp',
     'null_encoder.hpp',
+    'KIPRnet.hpp',
+    'PracticalSocket.hpp'
 ])
 
 libav_dep_names = ['libavcodec', 'libavdevice', 'libavformat', 'libavutil', 'libswresample']
 libav_deps = []
+
+libswscale_dep = dependency('libswscale', required : true)
 
 enable_libav = true
 foreach name : libav_dep_names
@@ -29,9 +35,9 @@ foreach name : libav_dep_names
 endforeach
 
 if enable_libav
-        shared_module('libav-encoder',  files('libav_encoder.cpp'),
+        shared_module('libav-encoder',  files('libav_encoder.cpp', ),
                             include_directories : '../',
-                            dependencies : [libav_deps, libcamera_dep],
+                            dependencies : [libav_deps, libcamera_dep, libswscale_dep],
                             cpp_args : cpp_arguments,
                             install : true,
                             install_dir: encoder_libdir,

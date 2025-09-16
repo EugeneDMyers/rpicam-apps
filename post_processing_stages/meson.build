@@ -125,6 +125,8 @@ if get_option('enable_imx500')
     subdir('imx500')
 endif
 
+subdir('kipr')
+
 post_processing_headers = files([
     'histogram.hpp',
     'object_detect.hpp',

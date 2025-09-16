@@ -81,13 +81,20 @@ version_cpp = vcs_tag(command : version_cmd,
 
 rpicam_app_src += version_cpp
 
+enable_opencv = true
+opencv_dep = dependency('opencv4', required : get_option('enable_opencv'))
+
+libswscale_dep = dependency('libswscale', required : true)
+libavutil_dep = dependency('libavutil',   required : true)
+libavcodec_dep = dependency('libavcodec', required : true)
+
 rpicam_app = library(
     'rpicam_app',
     rpicam_app_src,
     version : meson.project_version(),
-    include_directories : include_directories('.'),
+    include_directories : include_directories('.', '/usr/local/include'),
     install : true,
-    dependencies : rpicam_app_dep,
+    dependencies : [rpicam_app_dep, opencv_dep, libswscale_dep, libavutil_dep, libavcodec_dep ],
 )
 
 pkg = import('pkgconfig')
